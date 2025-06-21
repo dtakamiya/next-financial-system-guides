@@ -233,19 +233,19 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph 口座サービス (Account Service)
-        A[口座開設処理] --> B{口座が開設された<br/>(Domain Event)}
+    subgraph "口座サービス (Account Service)"
+        A["口座開設処理"] --> B{"口座が開設された<br/>(Domain Event)"}
     end
-    subgraph 通知サービス (Notification Service)
-        C[イベントを購読] --> D[ウェルカムメール送信]
+    subgraph "通知サービス (Notification Service)"
+        C["イベントを購読"] --> D["ウェルカムメール送信"]
     end
-    subgraph 監査ログサービス (Audit Service)
-        E[イベントを購読] --> F[監査ログを記録]
+    subgraph "監査ログサービス (Audit Service)"
+        E["イベントを購読"] --> F["監査ログを記録"]
     end
 
-    B -- 発行 --> MessageBroker(("Message Broker<br/>(e.g., Kafka, RabbitMQ)"))
-    MessageBroker -- 配送 --> C
-    MessageBroker -- 配送 --> E
+    B -- "発行" --> MessageBroker(("Message Broker<br/>(e.g., Kafka, RabbitMQ)"))
+    MessageBroker -- "配送" --> C
+    MessageBroker -- "配送" --> E
 
     style A fill:#cde4ff
     style D fill:#cde4ff
