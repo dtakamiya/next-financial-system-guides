@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.banking.infrastructure.persistence.TransferMapper">
+
+    <resultMap id="TransferDataResultMap" type="com.example.banking.infrastructure.persistence.TransferData">
+        <id property="id" column="id"/>
+        <result property="sourceAccountId" column="source_account_id"/>
+        <result property="destinationAccountId" column="destination_account_id"/>
+        <result property="moneyAmount" column="money_amount"/>
+        <result property="moneyCurrency" column="money_currency"/>
+        <result property="status" column="status" javaType="com.example.banking.domain.transfer.Transfer$TransferStatus" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="version" column="version"/>
+    </resultMap>
+
+    <select id="findById" resultMap="TransferDataResultMap">
+        SELECT * FROM transfers WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.banking.infrastructure.persistence.TransferData">
+        INSERT INTO transfers (id, source_account_id, destination_account_id, money_amount, money_currency, status, version)
+        VALUES (#{id}, #{sourceAccountId}, #{destinationAccountId}, #{moneyAmount}, #{moneyCurrency}, #{status}::text, 0)
+    </insert>
+
+    <update id="update" parameterType="com.example.banking.infrastructure.persistence.TransferData">
+        UPDATE transfers
+        SET
+            status = #{status}::text,
+            version = version + 1
+        WHERE
+            id = #{id} AND version = #{version}
+    </update>
+
+</mapper> 

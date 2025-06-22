@@ -1,0 +1,43 @@
+# Common settings
+spring:
+  application:
+    name: sample01-banking-api
+
+mybatis:
+  mapper-locations: classpath:com/example/banking/infrastructure/persistence/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+---
+# Development profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:bankdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+
+---
+# Production profile
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:bankdb}
+    username: ${DB_USER:user}
+    password: ${DB_PASS:password}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: never 
